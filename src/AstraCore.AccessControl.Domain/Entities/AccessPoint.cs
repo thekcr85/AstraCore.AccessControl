@@ -5,14 +5,14 @@ namespace AstraCore.AccessControl.Domain.Entities;
 
 public sealed class AccessPoint : BaseEntity
 {
-    public string Name { get; set; } = string.Empty;
-    public string Location { get; set; } = string.Empty;
-    public string? Description { get; set; }
-    public AccessPointType Type { get; set; }
-    public AccessLevel RequiredAccessLevel { get; set; }
-    public bool IsEnabled { get; set; }
+    public string Name { get; private set; } = string.Empty;
+    public string Location { get; private set; } = string.Empty;
+    public string? Description { get; private set; }
+    public AccessPointType Type { get; private set; }
+    public AccessLevel RequiredAccessLevel { get; private set; }
+    public bool IsEnabled { get; private set; }
 
-    public ICollection<AccessLog> AccessLogs { get; set; } = new List<AccessLog>();
+    public ICollection<AccessLog> AccessLogs { get; private set; } = new List<AccessLog>();
 
     public AccessPoint()
     {
