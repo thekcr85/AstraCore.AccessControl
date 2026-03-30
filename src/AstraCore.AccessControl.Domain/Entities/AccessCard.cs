@@ -1,11 +1,12 @@
 using AstraCore.AccessControl.Domain.Common;
 using AstraCore.AccessControl.Domain.Enums;
+using AstraCore.AccessControl.Domain.ValueObjects;
 
 namespace AstraCore.AccessControl.Domain.Entities;
 
 public sealed class AccessCard : BaseEntity
 {
-	public string CardNumber { get; private set; } = string.Empty;
+	public CardNumber CardNumber { get; private set; }
 	public AccessLevel AccessLevel { get; private set; }
 	public DateTime IssuedDate { get; private set; }
 	public DateTime ExpiryDate { get; private set; }
