@@ -33,8 +33,27 @@ public sealed class Employee : BaseEntity
         Status = EmploymentStatus.Active;
     }
 
-    public void Activate() => Status = EmploymentStatus.Active;
-    public void Suspend() => Status = EmploymentStatus.Suspended;
-    public void Terminate() => Status = EmploymentStatus.Terminated;
-    public void SetOnLeave() => Status = EmploymentStatus.OnLeave;
+    public void Activate()
+    {
+        Status = EmploymentStatus.Active;
+        Touch();
+	}
+
+    public void Suspend()
+    {
+        Status = EmploymentStatus.Suspended;
+        Touch();
+    }
+
+    public void Terminate()
+    {
+        Status = EmploymentStatus.Terminated;
+        Touch();
+    }
+
+    public void SetOnLeave()
+    {
+        Status = EmploymentStatus.OnLeave;
+        Touch();
+    }
 }
