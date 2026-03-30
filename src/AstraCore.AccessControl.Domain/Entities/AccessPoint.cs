@@ -62,8 +62,8 @@ public sealed class AccessPoint : BaseEntity
 		Touch();
 	}
 
-	public bool CanAccess(AccessLevel cardAccessLevel)
-    {
-        return IsEnabled && cardAccessLevel >= RequiredAccessLevel;
-    }
+	public bool CanAccess(AccessCard card)
+	{
+		return IsEnabled && card.IsValid && card.AccessLevel >= RequiredAccessLevel;
+	}
 }
