@@ -56,6 +56,12 @@ public sealed class AccessPoint : BaseEntity
 		Touch();
 	}
 
+	public void ChangeRequiredAccessLevel(AccessLevel newLevel)
+	{
+		RequiredAccessLevel = newLevel;
+		Touch();
+	}
+
 	public bool CanAccess(AccessLevel cardAccessLevel)
     {
         return IsEnabled && cardAccessLevel >= RequiredAccessLevel;
