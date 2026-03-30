@@ -14,7 +14,7 @@ public sealed class AccessLog : BaseEntity
     public AccessResult Result { get; private set; }
     public string? Notes { get; private set; }
 
-    public AccessLog()
+    private AccessLog()
     {
     }
 
