@@ -55,6 +55,12 @@ public sealed class Employee : BaseEntity
 		Touch();
 	}
 
+	public void UpdatePosition(string? position)
+	{
+		Position = position;
+		Touch();
+	}
+
 	public void Activate()
     {
         Status = EmploymentStatus.Active;
