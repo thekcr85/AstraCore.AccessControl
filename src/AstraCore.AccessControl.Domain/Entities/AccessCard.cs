@@ -17,9 +17,9 @@ public sealed class AccessCard : BaseEntity
     private readonly List<AccessLog> _accessLogs = new List<AccessLog>();
     public IReadOnlyCollection<AccessLog> GetAccessLogs() => _accessLogs.AsReadOnly();
 
-    public bool IsValid => IsActive && DateTime.UtcNow < ExpiryDate;
-
     public bool IsExpired => DateTime.UtcNow >= ExpiryDate;
+    public bool IsValid => IsActive && !IsExpired;
+
 
     public AccessCard()
     {
