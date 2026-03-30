@@ -14,7 +14,7 @@ public sealed class AccessCard : BaseEntity
 	public Guid EmployeeId { get; private set; }
 	public Employee Employee { get; private set; } = null!;
 
-	private readonly List<AccessLog> _accessLogs = new List<AccessLog>();
+	private readonly List<AccessLog> _accessLogs = new();
 	public IReadOnlyCollection<AccessLog> GetAccessLogs() => _accessLogs.AsReadOnly();
 
 	public bool IsExpired => DateTime.UtcNow >= ExpiryDate;
