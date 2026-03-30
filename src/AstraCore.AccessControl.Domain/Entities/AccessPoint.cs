@@ -31,8 +31,17 @@ public sealed class AccessPoint : BaseEntity
         IsEnabled = true;
     }
 
-    public void Enable() => IsEnabled = true;
-    public void Disable() => IsEnabled = false;
+    public void Enable()
+    {
+        IsEnabled = true;
+        Touch();
+    }
+
+    public void Disable()
+    {
+        IsEnabled = false;
+        Touch();
+    }
 
     public bool CanAccess(AccessLevel cardAccessLevel)
     {
