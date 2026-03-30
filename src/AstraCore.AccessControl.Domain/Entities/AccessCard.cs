@@ -54,6 +54,7 @@ public sealed class AccessCard : BaseEntity
 			throw new InvalidOperationException("New expiry date must be later than current expiry date.");
 
 		ExpiryDate = newExpiryDate;
+		Touch();
 	}
 
 	public void ChangeAccessLevel(AccessLevel newLevel)
