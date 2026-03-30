@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/AstraCore.AccessControl.Api/AstraCore.AccessControl.Api.csproj" />
+    <Project Path="src/AstraCore.AccessControl.Application/AstraCore.AccessControl.Application.csproj" />
+    <Project Path="src/AstraCore.AccessControl.Domain/AstraCore.AccessControl.Domain.csproj" />
+    <Project Path="src/AstraCore.AccessControl.Infrastructure/AstraCore.AccessControl.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AstraCore.AccessControl.Tests/AstraCore.AccessControl.Tests.csproj" />
+  </Folder>
+</Solution>
