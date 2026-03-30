@@ -14,7 +14,9 @@ public sealed record CardNumber
         if (string.IsNullOrWhiteSpace(value))
             throw new ArgumentException("Card number cannot be empty", nameof(value));
 
-        if (value.Length != 16)
+		value = value.Trim();
+
+		if (value.Length != 16)
 			throw new ArgumentException($"Card number must be exactly 16 characters, got {value.Length}.", nameof(value));
 
 		if (!value.All(char.IsLetterOrDigit))
