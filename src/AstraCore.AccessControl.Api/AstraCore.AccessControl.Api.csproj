@@ -10,4 +10,9 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AstraCore.AccessControl.Application\AstraCore.AccessControl.Application.csproj" />
+    <ProjectReference Include="..\AstraCore.AccessControl.Infrastructure\AstraCore.AccessControl.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

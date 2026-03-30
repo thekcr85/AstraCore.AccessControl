@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AstraCore.AccessControl.Domain\AstraCore.AccessControl.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
