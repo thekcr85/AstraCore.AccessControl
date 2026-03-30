@@ -15,7 +15,7 @@ public sealed class AccessPoint : BaseEntity
     private readonly List<AccessLog> _accessLogs = new();
     public IReadOnlyCollection<AccessLog> AccessLogs => _accessLogs.AsReadOnly();
 
-	public AccessPoint()
+	private AccessPoint()
     {
     }
 
