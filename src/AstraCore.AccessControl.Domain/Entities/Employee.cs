@@ -43,7 +43,19 @@ public sealed class Employee : BaseEntity
         Status = EmploymentStatus.Active;
     }
 
-    public void Activate()
+	public void UpdateContactInfo(string email, string department)
+	{
+		if (string.IsNullOrWhiteSpace(email))
+			throw new ArgumentException("Email is required.", nameof(email));
+		if (string.IsNullOrWhiteSpace(department))
+			throw new ArgumentException("Department is required.", nameof(department));
+
+		Email = email;
+		Department = department;
+		Touch();
+	}
+
+	public void Activate()
     {
         Status = EmploymentStatus.Active;
         Touch();
