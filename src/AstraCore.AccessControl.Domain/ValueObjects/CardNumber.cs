@@ -15,9 +15,9 @@ public sealed record CardNumber
             throw new ArgumentException("Card number cannot be empty", nameof(value));
 
         if (value.Length != 16)
-            throw new ArgumentException("Card number must be exactly 16 characters", nameof(value));
+			throw new ArgumentException($"Card number must be exactly 16 characters, got {value.Length}.", nameof(value));
 
-        if (!value.All(char.IsLetterOrDigit))
+		if (!value.All(char.IsLetterOrDigit))
             throw new ArgumentException("Card number must contain only letters and digits", nameof(value));
 
         return new CardNumber(value.ToUpperInvariant());
