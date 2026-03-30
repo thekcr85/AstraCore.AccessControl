@@ -12,9 +12,10 @@ public sealed class AccessPoint : BaseEntity
     public AccessLevel RequiredAccessLevel { get; private set; }
     public bool IsEnabled { get; private set; }
 
-    public ICollection<AccessLog> AccessLogs { get; private set; } = new List<AccessLog>();
+    private readonly List<AccessLog> _accessLogs = new();
+    public IReadOnlyCollection<AccessLog> AccessLogs => _accessLogs.AsReadOnly();
 
-    public AccessPoint()
+	public AccessPoint()
     {
     }
 
