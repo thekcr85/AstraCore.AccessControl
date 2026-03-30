@@ -13,8 +13,8 @@ public sealed class Employee : BaseEntity
     public DateTime HireDate { get; private set; }
     public EmploymentStatus Status { get; private set; }
 
-    private readonly List<AccessCard> AccessCards = new List<AccessCard>();
-    public IReadOnlyCollection<AccessCard> GetAccessCards() => AccessCards.AsReadOnly();
+    private readonly List<AccessCard> _accessCards = new List<AccessCard>();
+    public IReadOnlyCollection<AccessCard> GetAccessCards() => _accessCards.AsReadOnly();
 
 	public string FullName => $"{FirstName} {LastName}";
 
@@ -84,4 +84,13 @@ public sealed class Employee : BaseEntity
         Status = EmploymentStatus.OnLeave;
         Touch();
     }
+
+	public void AddAccessCard(AccessCard card)
+	{
+		if (card == null)
+			throw new ArgumentNullException(nameof(card));
+
+		_accessCards.Add(card);
+		Touch();
+	}
 }
