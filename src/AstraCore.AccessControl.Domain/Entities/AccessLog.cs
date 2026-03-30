@@ -5,15 +5,14 @@ namespace AstraCore.AccessControl.Domain.Entities;
 
 public sealed class AccessLog : BaseEntity
 {
-    public Guid AccessCardId { get; set; }
-    public AccessCard AccessCard { get; set; } = null!;
+    public Guid AccessCardId { get; private set; }
+    public AccessCard AccessCard { get; private set; } = null!;
 
-    public Guid AccessPointId { get; set; }
-    public AccessPoint AccessPoint { get; set; } = null!;
-
-    public DateTime AttemptedAt { get; set; }
-    public AccessResult Result { get; set; }
-    public string? Notes { get; set; }
+    public Guid AccessPointId { get; private set; }
+    public AccessPoint AccessPoint { get; private set; } = null!;
+    public DateTime AttemptedAt { get; private set; }
+    public AccessResult Result { get; private set; }
+    public string? Notes { get; private set; }
 
     public AccessLog()
     {
