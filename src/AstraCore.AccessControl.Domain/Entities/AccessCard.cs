@@ -47,6 +47,9 @@ public sealed class AccessCard : BaseEntity
 
 	public void Reactivate()
 	{
+		if (IsExpired)
+			throw new InvalidOperationException("Cannot reactivate an expired card.");
+
 		IsActive = true;
 		Touch();
 	}
