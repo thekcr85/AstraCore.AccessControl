@@ -24,4 +24,6 @@ public sealed record CardNumber
     }
 
     public static implicit operator string(CardNumber cardNumber) => cardNumber.Value;
+
+	public override string ToString() => Value;
 }
