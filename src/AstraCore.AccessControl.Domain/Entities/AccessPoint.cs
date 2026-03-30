@@ -15,13 +15,16 @@ public sealed class AccessPoint : BaseEntity
     private readonly List<AccessLog> _accessLogs = new();
     public IReadOnlyCollection<AccessLog> AccessLogs => _accessLogs.AsReadOnly();
 
-	private AccessPoint()
-    {
-    }
+	private AccessPoint() { }
 
     public AccessPoint(string name, string location, AccessPointType type, AccessLevel requiredAccessLevel)
     {
-        Name = name;
+		if (string.IsNullOrWhiteSpace(name))
+			throw new ArgumentException("Name is required.", nameof(name));
+		if (string.IsNullOrWhiteSpace(location))
+			throw new ArgumentException("Location is required.", nameof(location));
+
+		Name = name;
         Location = location;
         Type = type;
         RequiredAccessLevel = requiredAccessLevel;
