@@ -6,7 +6,7 @@ namespace AstraCore.AccessControl.Domain.Entities;
 
 public sealed class AccessCard : BaseEntity
 {
-	public CardNumber CardNumber { get; private set; }
+	public CardNumber CardNumber { get; private set; } = null!; 
 	public AccessLevel AccessLevel { get; private set; }
 	public DateTime IssuedDate { get; private set; }
 	public DateTime ExpiryDate { get; private set; }
