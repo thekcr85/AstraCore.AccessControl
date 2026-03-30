@@ -93,4 +93,13 @@ public sealed class Employee : BaseEntity
 		_accessCards.Add(card);
 		Touch();
 	}
+
+	public void RemoveAccessCard(AccessCard card)
+	{
+		if (card == null)
+			throw new ArgumentNullException(nameof(card));
+
+		_accessCards.Remove(card);
+		Touch();
+	}
 }
