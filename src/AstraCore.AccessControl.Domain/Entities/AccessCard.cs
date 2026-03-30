@@ -20,7 +20,7 @@ public sealed class AccessCard : BaseEntity
     public bool IsValid => IsActive && !IsExpired;
 
 
-    public AccessCard()
+    private AccessCard()
     {
     }
 
