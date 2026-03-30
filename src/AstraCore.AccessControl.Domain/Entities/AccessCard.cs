@@ -25,6 +25,11 @@ public sealed class AccessCard : BaseEntity
 
 	public AccessCard(string cardNumber, AccessLevel accessLevel, Guid employeeId, DateTime expiryDate)
 	{
+		if (employeeId == Guid.Empty)
+			throw new ArgumentException("Employee ID is required.", nameof(employeeId));
+		if (expiryDate <= DateTime.UtcNow)
+			throw new ArgumentException("Expiry date must be in the future.", nameof(expiryDate));
+
 		CardNumber = CardNumber.Create(cardNumber);
 		AccessLevel = accessLevel;
 		EmployeeId = employeeId;
