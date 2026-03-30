@@ -34,4 +34,11 @@ public sealed class AccessLog : BaseEntity
         Notes = notes;
     }
 
+	public void AddNote(string note)
+	{
+		if (string.IsNullOrWhiteSpace(note))
+			throw new ArgumentException("Note cannot be empty.", nameof(note));
+
+		Notes = note;
+	}
 }
