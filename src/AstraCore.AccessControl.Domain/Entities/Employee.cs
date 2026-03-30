@@ -19,7 +19,7 @@ public sealed class Employee : BaseEntity
 
     public bool IsActive => Status == EmploymentStatus.Active;
 
-    public Employee()
+    private Employee()
     {
     }
 
