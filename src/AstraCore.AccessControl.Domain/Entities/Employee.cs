@@ -5,17 +5,18 @@ namespace AstraCore.AccessControl.Domain.Entities;
 
 public sealed class Employee : BaseEntity
 {
-    public string FirstName { get; set; } = string.Empty;
-    public string LastName { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
-    public string Department { get; set; } = string.Empty;
-    public string? Position { get; set; }
-    public DateTime HireDate { get; set; }
-    public EmploymentStatus Status { get; set; }
+    public string FirstName { get; private set; } = string.Empty;
+    public string LastName { get; private set; } = string.Empty;
+    public string Email { get; private set; } = string.Empty;
+    public string Department { get; private set; } = string.Empty;
+    public string? Position { get; private set; }
+    public DateTime HireDate { get; private set; }
+    public EmploymentStatus Status { get; private set; }
 
-    public ICollection<AccessCard> AccessCards { get; set; } = new List<AccessCard>();
+    private readonly List<AccessCard> AccessCards = new List<AccessCard>();
+    public IReadOnlyCollection<AccessCard> GetAccessCards() => AccessCards.AsReadOnly();
 
-    public string FullName => $"{FirstName} {LastName}";
+	public string FullName => $"{FirstName} {LastName}";
 
     public bool IsActive => Status == EmploymentStatus.Active;
 
