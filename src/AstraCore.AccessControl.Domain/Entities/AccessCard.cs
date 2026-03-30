@@ -6,16 +6,16 @@ namespace AstraCore.AccessControl.Domain.Entities;
 
 public sealed class AccessCard : BaseEntity
 {
-    public string CardNumber { get; set; } = string.Empty;
-    public AccessLevel AccessLevel { get; set; }
-    public DateTime IssuedDate { get; set; }
-    public DateTime ExpiryDate { get; set; }
-    public bool IsActive { get; set; }
+    public string CardNumber { get; private set; } = string.Empty;
+    public AccessLevel AccessLevel { get; private set; }
+    public DateTime IssuedDate { get; private set; }
+    public DateTime ExpiryDate { get; private set; }
+    public bool IsActive { get; private set; }
+    public Guid EmployeeId { get; private set; }
+    public Employee Employee { get; private set; } = null!;
 
-    public Guid EmployeeId { get; set; }
-    public Employee Employee { get; set; } = null!;
-
-    public ICollection<AccessLog> AccessLogs { get; set; } = new List<AccessLog>();
+    private readonly List<AccessLog> _accessLogs = new List<AccessLog>();
+    public IReadOnlyCollection<AccessLog> GetAccessLogs() => _accessLogs.AsReadOnly();
 
     public bool IsValid => IsActive && DateTime.UtcNow < ExpiryDate;
 
