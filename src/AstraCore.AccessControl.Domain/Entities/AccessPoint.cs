@@ -43,7 +43,20 @@ public sealed class AccessPoint : BaseEntity
         Touch();
     }
 
-    public bool CanAccess(AccessLevel cardAccessLevel)
+	public void UpdateDetails(string name, string location, string? description)
+	{
+		if (string.IsNullOrWhiteSpace(name))
+			throw new ArgumentException("Name is required.", nameof(name));
+		if (string.IsNullOrWhiteSpace(location))
+			throw new ArgumentException("Location is required.", nameof(location));
+
+		Name = name;
+		Location = location;
+		Description = description;
+		Touch();
+	}
+
+	public bool CanAccess(AccessLevel cardAccessLevel)
     {
         return IsEnabled && cardAccessLevel >= RequiredAccessLevel;
     }
