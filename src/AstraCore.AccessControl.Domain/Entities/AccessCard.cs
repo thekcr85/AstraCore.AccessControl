@@ -58,7 +58,7 @@ public sealed class AccessCard : BaseEntity
 	public void ExtendExpiry(DateTime newExpiryDate)
 	{
 		if (newExpiryDate <= ExpiryDate)
-			throw new InvalidOperationException("New expiry date must be later than current expiry date");
+			throw new InvalidOperationException("New expiry date must be later than current expiry date.");
 
 		ExpiryDate = newExpiryDate;
 	}
