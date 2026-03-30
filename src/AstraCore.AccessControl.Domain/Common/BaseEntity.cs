@@ -11,4 +11,9 @@ public abstract class BaseEntity
         Id = Guid.NewGuid();
         CreatedAt = DateTime.UtcNow;
     }
+
+    public void Touch()
+    {
+        UpdatedAt = DateTime.UtcNow;
+	}
 }
