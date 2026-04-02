@@ -24,8 +24,8 @@ public sealed class Employee : BaseEntity
     {
     }
 
-    public Employee(string firstName, string lastName, string email, string department, DateTime hireDate)
-    {
+	public Employee(string firstName, string lastName, string email, string department, DateTime hireDate, string? position = null)
+	{
 		if (string.IsNullOrWhiteSpace(firstName))
 			throw new ArgumentException("First name is required.", nameof(firstName));
 		if (string.IsNullOrWhiteSpace(lastName))
@@ -36,12 +36,13 @@ public sealed class Employee : BaseEntity
 			throw new ArgumentException("Department is required.", nameof(department));
 
 		FirstName = firstName;
-        LastName = lastName;
-        Email = email;
-        Department = department;
-        HireDate = hireDate;
-        Status = EmploymentStatus.Active;
-    }
+		LastName = lastName;
+		Email = email;
+		Department = department;
+		Position = position;
+		HireDate = hireDate;
+		Status = EmploymentStatus.Active;
+	}
 
 	public void UpdateContactInfo(string email, string department)
 	{
