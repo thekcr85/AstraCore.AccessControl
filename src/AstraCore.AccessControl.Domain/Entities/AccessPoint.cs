@@ -12,24 +12,25 @@ public sealed class AccessPoint : BaseEntity
     public AccessLevel RequiredAccessLevel { get; private set; }
     public bool IsEnabled { get; private set; }
 
-    private readonly List<AccessLog> _accessLogs = new();
+    private readonly List<AccessLog> _accessLogs = [];
     public IReadOnlyCollection<AccessLog> AccessLogs => _accessLogs.AsReadOnly();
 
 	private AccessPoint() { }
 
-    public AccessPoint(string name, string location, AccessPointType type, AccessLevel requiredAccessLevel)
-    {
+	public AccessPoint(string name, string location, AccessPointType type, AccessLevel requiredAccessLevel, string? description = null)
+	{
 		if (string.IsNullOrWhiteSpace(name))
 			throw new ArgumentException("Name is required.", nameof(name));
 		if (string.IsNullOrWhiteSpace(location))
 			throw new ArgumentException("Location is required.", nameof(location));
 
 		Name = name;
-        Location = location;
-        Type = type;
-        RequiredAccessLevel = requiredAccessLevel;
-        IsEnabled = true;
-    }
+		Location = location;
+		Description = description;
+		Type = type;
+		RequiredAccessLevel = requiredAccessLevel;
+		IsEnabled = true;
+	}
 
     public void Enable()
     {
