@@ -1,7 +1,7 @@
 using AstraCore.AccessControl.Application.DTOs.Employee;
 using FluentValidation;
 
-namespace AstraCore.AccessControl.Application.Validators;
+namespace AstraCore.AccessControl.Application.Validators.Employee;
 
 public sealed class UpdateEmployeeRequestValidator : AbstractValidator<UpdateEmployeeRequest>
 {

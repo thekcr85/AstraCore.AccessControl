@@ -1,7 +1,7 @@
 using AstraCore.AccessControl.Application.DTOs.AccessLog;
 using FluentValidation;
 
-namespace AstraCore.AccessControl.Application.Validators;
+namespace AstraCore.AccessControl.Application.Validators.AccessLog;
 
 public sealed class AccessAttemptRequestValidator : AbstractValidator<AccessAttemptRequest>
 {

@@ -1,7 +1,7 @@
 using AstraCore.AccessControl.Application.DTOs.AccessCard;
 using FluentValidation;
 
-namespace AstraCore.AccessControl.Application.Validators;
+namespace AstraCore.AccessControl.Application.Validators.AccessCard;
 
 public sealed class CreateAccessCardRequestValidator : AbstractValidator<CreateAccessCardRequest>
 {

@@ -1,11 +1,11 @@
 using AstraCore.AccessControl.Application.DTOs.AccessPoint;
 using FluentValidation;
 
-namespace AstraCore.AccessControl.Application.Validators;
+namespace AstraCore.AccessControl.Application.Validators.AccessPoint;
 
-public sealed class CreateAccessPointRequestValidator : AbstractValidator<CreateAccessPointRequest>
+public sealed class UpdateAccessPointRequestValidator : AbstractValidator<UpdateAccessPointRequest>
 {
-    public CreateAccessPointRequestValidator()
+    public UpdateAccessPointRequestValidator()
     {
         RuleLevelCascadeMode = CascadeMode.Stop;
 
@@ -20,9 +20,6 @@ public sealed class CreateAccessPointRequestValidator : AbstractValidator<Create
         RuleFor(x => x.Description)
             .MaximumLength(500).WithMessage("Description cannot exceed 500 characters.")
             .When(x => x.Description is not null);
-
-        RuleFor(x => x.Type)
-            .IsInEnum().WithMessage("Access point type is not valid.");
 
         RuleFor(x => x.RequiredAccessLevel)
             .IsInEnum().WithMessage("Required access level is not valid.");
