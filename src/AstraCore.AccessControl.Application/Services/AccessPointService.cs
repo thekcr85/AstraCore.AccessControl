@@ -1,13 +1,16 @@
 using AstraCore.AccessControl.Application.DTOs.AccessPoint;
 using AstraCore.AccessControl.Application.Interfaces.Repositories;
 using AstraCore.AccessControl.Application.Interfaces.Services;
+using AstraCore.AccessControl.Application.Interfaces.UnitOfWork;
 using AstraCore.AccessControl.Application.Mappings;
 using AstraCore.AccessControl.Domain.Entities;
 using AstraCore.AccessControl.Domain.Enums;
 
 namespace AstraCore.AccessControl.Application.Services;
 
-public sealed class AccessPointService(IAccessPointRepository repository) : IAccessPointService
+public sealed class AccessPointService(
+    IAccessPointRepository repository,
+    IUnitOfWork unitOfWork) : IAccessPointService
 {
     public async Task<AccessPointResponse> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -32,8 +35,8 @@ public sealed class AccessPointService(IAccessPointRepository repository) : IAcc
             request.RequiredAccessLevel,
             request.Description);
 
-        await repository.AddAsync(accessPoint, cancellationToken);
-        await repository.SaveChangesAsync(cancellationToken);
+        repository.Add(accessPoint);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return accessPoint.ToResponse();
     }
@@ -47,7 +50,7 @@ public sealed class AccessPointService(IAccessPointRepository repository) : IAcc
         accessPoint.ChangeRequiredAccessLevel(request.RequiredAccessLevel);
 
         repository.Update(accessPoint);
-        await repository.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return accessPoint.ToResponse();
     }
@@ -59,7 +62,7 @@ public sealed class AccessPointService(IAccessPointRepository repository) : IAcc
 
         accessPoint.Enable();
         repository.Update(accessPoint);
-        await repository.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
     public async Task DisableAsync(Guid id, CancellationToken cancellationToken = default)
@@ -69,7 +72,7 @@ public sealed class AccessPointService(IAccessPointRepository repository) : IAcc
 
         accessPoint.Disable();
         repository.Update(accessPoint);
-        await repository.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
     public async Task<AccessPointResponse> ChangeRequiredAccessLevelAsync(Guid id, AccessLevel newLevel, CancellationToken cancellationToken = default)
@@ -79,7 +82,7 @@ public sealed class AccessPointService(IAccessPointRepository repository) : IAcc
 
         accessPoint.ChangeRequiredAccessLevel(newLevel);
         repository.Update(accessPoint);
-        await repository.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return accessPoint.ToResponse();
     }
