@@ -8,8 +8,7 @@ public interface IEmployeeRepository
     Task<Employee?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
     Task<IReadOnlyList<Employee>> GetAllAsync(CancellationToken cancellationToken = default);
     Task<bool> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default);
-    Task AddAsync(Employee employee, CancellationToken cancellationToken = default);
+    void Add(Employee employee);
     void Update(Employee employee);
     void Remove(Employee employee);
-    Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }
