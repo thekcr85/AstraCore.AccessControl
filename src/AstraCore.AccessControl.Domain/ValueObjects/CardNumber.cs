@@ -25,7 +25,11 @@ public sealed record CardNumber
         return new CardNumber(value.ToUpperInvariant());
     }
 
-    public static implicit operator string(CardNumber cardNumber) => cardNumber.Value;
+	// For EF Core only - bypasses validation since we assume the database is already valid
+	internal static CardNumber FromDatabase(string value)
+		=> new CardNumber(value);
+
+	public static implicit operator string(CardNumber cardNumber) => cardNumber.Value;
 
 	public override string ToString() => Value;
 }
