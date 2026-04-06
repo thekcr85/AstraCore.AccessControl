@@ -1,6 +1,7 @@
 using AstraCore.AccessControl.Application.DTOs.AccessLog;
 using AstraCore.AccessControl.Application.Interfaces.Repositories;
 using AstraCore.AccessControl.Application.Interfaces.Services;
+using AstraCore.AccessControl.Application.Interfaces.UnitOfWork;
 using AstraCore.AccessControl.Application.Mappings;
 using AstraCore.AccessControl.Domain.Entities;
 using AstraCore.AccessControl.Domain.Enums;
@@ -11,7 +12,8 @@ public sealed class AccessValidationService(
     IAccessCardRepository cardRepository,
     IAccessPointRepository accessPointRepository,
     IAccessLogRepository logRepository,
-    IEmployeeRepository employeeRepository) : IAccessValidationService
+    IEmployeeRepository employeeRepository,
+    IUnitOfWork unitOfWork) : IAccessValidationService
 {
     public async Task<AccessLogResponse> ValidateAccessAsync(AccessAttemptRequest request, CancellationToken cancellationToken = default)
     {
@@ -71,8 +73,8 @@ public sealed class AccessValidationService(
     {
         var log = new AccessLog(cardId, accessPointId, result);
 
-        await logRepository.AddAsync(log, cancellationToken);
-        await logRepository.SaveChangesAsync(cancellationToken);
+        logRepository.Add(log);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return log.ToResponse();
     }
