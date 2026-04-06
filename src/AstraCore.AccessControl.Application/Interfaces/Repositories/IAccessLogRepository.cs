@@ -8,6 +8,5 @@ public interface IAccessLogRepository
     Task<IReadOnlyList<AccessLog>> GetByEmployeeIdAsync(Guid employeeId, CancellationToken cancellationToken = default);
     Task<IReadOnlyList<AccessLog>> GetByCardIdAsync(Guid cardId, DateTime? from = null, DateTime? to = null, CancellationToken cancellationToken = default);
     Task<IReadOnlyList<AccessLog>> GetByAccessPointIdAsync(Guid accessPointId, DateTime? from = null, DateTime? to = null, CancellationToken cancellationToken = default);
-    Task AddAsync(AccessLog log, CancellationToken cancellationToken = default);
-    Task SaveChangesAsync(CancellationToken cancellationToken = default);
+    void Add(AccessLog log);
 }
