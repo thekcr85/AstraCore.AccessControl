@@ -1,13 +1,16 @@
 using AstraCore.AccessControl.Application.DTOs.AccessCard;
 using AstraCore.AccessControl.Application.Interfaces.Repositories;
 using AstraCore.AccessControl.Application.Interfaces.Services;
+using AstraCore.AccessControl.Application.Interfaces.UnitOfWork;
 using AstraCore.AccessControl.Application.Mappings;
 using AstraCore.AccessControl.Domain.Entities;
 using AstraCore.AccessControl.Domain.Enums;
 
 namespace AstraCore.AccessControl.Application.Services;
 
-public sealed class AccessCardService(IAccessCardRepository repository) : IAccessCardService
+public sealed class AccessCardService(
+    IAccessCardRepository repository,
+    IUnitOfWork unitOfWork) : IAccessCardService
 {
     public async Task<AccessCardResponse> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -31,8 +34,8 @@ public sealed class AccessCardService(IAccessCardRepository repository) : IAcces
             request.EmployeeId,
             request.ExpiryDate);
 
-        await repository.AddAsync(card, cancellationToken);
-        await repository.SaveChangesAsync(cancellationToken);
+        repository.Add(card);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return card.ToResponse();
     }
@@ -44,7 +47,7 @@ public sealed class AccessCardService(IAccessCardRepository repository) : IAcces
 
         card.Deactivate();
         repository.Update(card);
-        await repository.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
     public async Task ReactivateAsync(Guid id, CancellationToken cancellationToken = default)
@@ -54,7 +57,7 @@ public sealed class AccessCardService(IAccessCardRepository repository) : IAcces
 
         card.Reactivate();
         repository.Update(card);
-        await repository.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
     public async Task<AccessCardResponse> ExtendExpiryAsync(Guid id, DateTime newExpiryDate, CancellationToken cancellationToken = default)
@@ -64,7 +67,7 @@ public sealed class AccessCardService(IAccessCardRepository repository) : IAcces
 
         card.ExtendExpiry(newExpiryDate);
         repository.Update(card);
-        await repository.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return card.ToResponse();
     }
@@ -76,7 +79,7 @@ public sealed class AccessCardService(IAccessCardRepository repository) : IAcces
 
         card.ChangeAccessLevel(newLevel);
         repository.Update(card);
-        await repository.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return card.ToResponse();
     }
