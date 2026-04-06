@@ -1,12 +1,15 @@
 using AstraCore.AccessControl.Application.DTOs.Employee;
 using AstraCore.AccessControl.Application.Interfaces.Repositories;
 using AstraCore.AccessControl.Application.Interfaces.Services;
+using AstraCore.AccessControl.Application.Interfaces.UnitOfWork;
 using AstraCore.AccessControl.Application.Mappings;
 using AstraCore.AccessControl.Domain.Entities;
 
 namespace AstraCore.AccessControl.Application.Services;
 
-public sealed class EmployeeService(IEmployeeRepository repository) : IEmployeeService
+public sealed class EmployeeService(
+    IEmployeeRepository repository,
+    IUnitOfWork unitOfWork) : IEmployeeService
 {
     public async Task<EmployeeResponse> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -45,8 +48,8 @@ public sealed class EmployeeService(IEmployeeRepository repository) : IEmployeeS
             request.HireDate,
             request.Position);
 
-        await repository.AddAsync(employee, cancellationToken);
-        await repository.SaveChangesAsync(cancellationToken);
+        repository.Add(employee);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return employee.ToResponse();
     }
@@ -66,7 +69,7 @@ public sealed class EmployeeService(IEmployeeRepository repository) : IEmployeeS
         employee.UpdatePosition(request.Position);
 
         repository.Update(employee);
-        await repository.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return employee.ToResponse();
     }
@@ -78,7 +81,7 @@ public sealed class EmployeeService(IEmployeeRepository repository) : IEmployeeS
 
         employee.Activate();
         repository.Update(employee);
-        await repository.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
     public async Task SuspendAsync(Guid id, CancellationToken cancellationToken = default)
@@ -88,7 +91,7 @@ public sealed class EmployeeService(IEmployeeRepository repository) : IEmployeeS
 
         employee.Suspend();
         repository.Update(employee);
-        await repository.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
     public async Task TerminateAsync(Guid id, CancellationToken cancellationToken = default)
@@ -98,7 +101,7 @@ public sealed class EmployeeService(IEmployeeRepository repository) : IEmployeeS
 
         employee.Terminate();
         repository.Update(employee);
-        await repository.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
     public async Task SetOnLeaveAsync(Guid id, CancellationToken cancellationToken = default)
@@ -108,6 +111,6 @@ public sealed class EmployeeService(IEmployeeRepository repository) : IEmployeeS
 
         employee.SetOnLeave();
         repository.Update(employee);
-        await repository.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }
