@@ -7,8 +7,7 @@ public interface IAccessPointRepository
     Task<AccessPoint?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
     Task<IReadOnlyList<AccessPoint>> GetAllAsync(CancellationToken cancellationToken = default);
     Task<IReadOnlyList<AccessPoint>> GetEnabledAsync(CancellationToken cancellationToken = default);
-    Task AddAsync(AccessPoint accessPoint, CancellationToken cancellationToken = default);
+    void Add(AccessPoint accessPoint);
     void Update(AccessPoint accessPoint);
     void Remove(AccessPoint accessPoint);
-    Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }
