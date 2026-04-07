@@ -26,7 +26,6 @@ When an employee scans their card at a door, the API:
 - 📋 **Repository + Unit of Work** — decoupled data access, single-commit transactions
 - 🎯 **Domain-Driven Design** — rich entities, value objects, domain enums
 - ✅ **FluentValidation 12** — cascade-stop validation on every request DTO
-- 🔑 **JWT Authentication** — *(in progress)*
 - 🧪 **xUnit Tests** — *(next step)*
 
 ## Tech Stack
@@ -37,7 +36,6 @@ ASP.NET Core Minimal API
 Entity Framework Core 10 + SQL Server
 FluentValidation 12
 OpenAPI (Microsoft.AspNetCore.OpenApi)
-JWT Bearer Authentication
 xUnit
 ```
 
@@ -82,7 +80,6 @@ src/
 │   │   ├── Configurations/   IEntityTypeConfiguration per entity (Fluent API)
 │   │   ├── Repositories/     IRepository implementations
 │   │   └── UnitOfWork/       Shared SaveChangesAsync across all repositories
-│   ├── Authentication/       JwtSettings, JwtTokenService  🔑 in progress
 │   └── DependencyInjection.cs
 │
 └── AstraCore.AccessControl.Api/              🔧 In progress — no endpoints yet
@@ -223,7 +220,6 @@ dotnet run --project src/AstraCore.AccessControl.Api
 | ✅ Application — Services, DTOs, Validators, Mappings | Complete |
 | ✅ Infrastructure — EF Core, Repositories, Unit of Work | Complete |
 | 🔧 API — Endpoints, error handling, middleware | **In progress** |
-| 🔧 JWT Authentication | In progress |
 | 🔧 xUnit Tests | **Next step** |
 
 ## Next Steps
@@ -254,7 +250,6 @@ xUnit Tests
 ```xml
 <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.5" />
 <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.5" />
-<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.5" />
 ```
 
 ### API
