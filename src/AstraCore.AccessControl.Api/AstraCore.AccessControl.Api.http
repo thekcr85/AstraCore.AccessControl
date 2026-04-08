@@ -1,6 +1,246 @@
-@AstraCore.AccessControl.Api_HostAddress = http://localhost:5082
+@baseUrl = http://localhost:5082
 
-GET {{AstraCore.AccessControl.Api_HostAddress}}/weatherforecast/
+# ── Set these after creating resources ──────────────────────────────────────
+@employeeId   = 00000000-0000-0000-0000-000000000000
+@cardId       = 00000000-0000-0000-0000-000000000000
+@accessPointId = 00000000-0000-0000-0000-000000000000
+
+
+# ════════════════════════════════════════════════════════════════
+#  EMPLOYEES
+# ════════════════════════════════════════════════════════════════
+
+### Get all employees
+GET {{baseUrl}}/api/employees
+Accept: application/json
+
+###
+
+### Get employee by ID
+GET {{baseUrl}}/api/employees/{{employeeId}}
+Accept: application/json
+
+###
+
+### Get employees by department
+GET {{baseUrl}}/api/employees/department/Engineering
+Accept: application/json
+
+###
+
+### Create employee
+POST {{baseUrl}}/api/employees
+Content-Type: application/json
+
+{
+  "firstName": "Jane",
+  "lastName": "Smith",
+  "email": "jane.smith@astracore.com",
+  "department": "Engineering",
+  "position": "Senior Developer",
+  "hireDate": "2024-01-15T00:00:00Z"
+}
+
+###
+
+### Update employee
+PUT {{baseUrl}}/api/employees/{{employeeId}}
+Content-Type: application/json
+
+{
+  "email": "jane.updated@astracore.com",
+  "department": "Architecture",
+  "position": "Lead Engineer"
+}
+
+###
+
+### Activate employee
+PATCH {{baseUrl}}/api/employees/{{employeeId}}/activate
+
+###
+
+### Suspend employee
+PATCH {{baseUrl}}/api/employees/{{employeeId}}/suspend
+
+###
+
+### Terminate employee
+PATCH {{baseUrl}}/api/employees/{{employeeId}}/terminate
+
+###
+
+### Set employee on leave
+PATCH {{baseUrl}}/api/employees/{{employeeId}}/leave
+
+###
+
+
+# ════════════════════════════════════════════════════════════════
+#  ACCESS CARDS
+# ════════════════════════════════════════════════════════════════
+
+### Get access card by ID
+GET {{baseUrl}}/api/access-cards/{{cardId}}
+Accept: application/json
+
+###
+
+### Get all cards for an employee
+GET {{baseUrl}}/api/access-cards/employee/{{employeeId}}
+Accept: application/json
+
+###
+
+### Issue a new access card
+POST {{baseUrl}}/api/access-cards
+Content-Type: application/json
+
+{
+  "cardNumber": "ABCD12345678EFGH",
+  "accessLevel": 2,
+  "employeeId": "{{employeeId}}",
+  "expiryDate": "2027-12-31T23:59:59Z"
+}
+
+###
+
+### Deactivate card
+PATCH {{baseUrl}}/api/access-cards/{{cardId}}/deactivate
+
+###
+
+### Reactivate card
+PATCH {{baseUrl}}/api/access-cards/{{cardId}}/reactivate
+
+###
+
+### Extend card expiry
+PATCH {{baseUrl}}/api/access-cards/{{cardId}}/expiry
+Content-Type: application/json
+
+{
+  "newExpiryDate": "2028-12-31T23:59:59Z"
+}
+
+###
+
+### Change card access level  (0=None 1=Basic 2=Standard 3=Elevated 4=High 5=Critical)
+PATCH {{baseUrl}}/api/access-cards/{{cardId}}/level
+Content-Type: application/json
+
+{
+  "newLevel": 3
+}
+
+###
+
+
+# ════════════════════════════════════════════════════════════════
+#  ACCESS POINTS
+# ════════════════════════════════════════════════════════════════
+
+### Get all access points
+GET {{baseUrl}}/api/access-points
+Accept: application/json
+
+###
+
+### Get access point by ID
+GET {{baseUrl}}/api/access-points/{{accessPointId}}
+Accept: application/json
+
+###
+
+### Create access point  (Type: 0=MainEntrance 1=SecondaryEntrance 2=Laboratory 3=ServerRoom 4=StorageFacility 5=ResearchZone 6=CommandCenter 7=EmergencyExit)
+POST {{baseUrl}}/api/access-points
+Content-Type: application/json
+
+{
+  "name": "Server Room A",
+  "location": "Building 1 - Floor 2",
+  "description": "Primary server room — restricted access",
+  "type": 3,
+  "requiredAccessLevel": 4
+}
+
+###
+
+### Update access point
+PUT {{baseUrl}}/api/access-points/{{accessPointId}}
+Content-Type: application/json
+
+{
+  "name": "Server Room A - Updated",
+  "location": "Building 1 - Floor 2 - East Wing",
+  "description": "Updated description",
+  "requiredAccessLevel": 5
+}
+
+###
+
+### Enable access point
+PATCH {{baseUrl}}/api/access-points/{{accessPointId}}/enable
+
+###
+
+### Disable access point
+PATCH {{baseUrl}}/api/access-points/{{accessPointId}}/disable
+
+###
+
+### Change required access level
+PATCH {{baseUrl}}/api/access-points/{{accessPointId}}/level
+Content-Type: application/json
+
+{
+  "newLevel": 3
+}
+
+###
+
+
+# ════════════════════════════════════════════════════════════════
+#  ACCESS VALIDATION
+# ════════════════════════════════════════════════════════════════
+
+### Validate card scan at a door
+POST {{baseUrl}}/api/access/attempt
+Content-Type: application/json
+
+{
+  "cardNumber": "ABCD12345678EFGH",
+  "accessPointId": "{{accessPointId}}"
+}
+
+###
+
+### Get logs by employee
+GET {{baseUrl}}/api/access/logs/employee/{{employeeId}}
+Accept: application/json
+
+###
+
+### Get logs by card
+GET {{baseUrl}}/api/access/logs/card/{{cardId}}
+Accept: application/json
+
+###
+
+### Get logs by card with date range
+GET {{baseUrl}}/api/access/logs/card/{{cardId}}?from=2024-01-01T00:00:00Z&to=2024-12-31T23:59:59Z
+Accept: application/json
+
+###
+
+### Get logs by access point
+GET {{baseUrl}}/api/access/logs/point/{{accessPointId}}
+Accept: application/json
+
+###
+
+### Get logs by access point with date range
+GET {{baseUrl}}/api/access/logs/point/{{accessPointId}}?from=2024-01-01T00:00:00Z&to=2024-12-31T23:59:59Z
 Accept: application/json
 
 ###
