@@ -34,10 +34,14 @@ internal sealed class AccessPointConfiguration : IEntityTypeConfiguration<Access
             .HasMaxLength(20)
             .IsRequired();
 
-        // Navigation via private backing field _accessLogs
-        builder.HasMany<AccessLog>("_accessLogs")
+        // EF Core populates _accessLogs directly; AccessLogs exposes it as read-only (DDD encapsulation)
+        builder.HasMany(ap => ap.AccessLogs)
             .WithOne(l => l.AccessPoint)
             .HasForeignKey(l => l.AccessPointId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Navigation(ap => ap.AccessLogs)
+            .HasField("_accessLogs")
+            .UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 }
