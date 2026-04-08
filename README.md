@@ -82,11 +82,14 @@ src/
 │   │   └── UnitOfWork/       Shared SaveChangesAsync across all repositories
 │   └── DependencyInjection.cs
 │
-└── AstraCore.AccessControl.Api/              🔧 In progress — no endpoints yet
-    └── Program.cs            AddApplication() + AddInfrastructure()
+└── AstraCore.AccessControl.Api/              ✅ Complete
+    ├── Endpoints/     EmployeeEndpoints, AccessCardEndpoints, AccessPointEndpoints, AccessValidationEndpoints
+    ├── Extensions/    EndpointExtensions (reflection-based auto-discovery)
+    ├── Filters/       ValidationFilter<T> (FluentValidation endpoint filter)
+    └── Program.cs     Scalar, OpenAPI, AddApplication() + AddInfrastructure() + MapEndpoints()
 
 tests/
-└── AstraCore.AccessControl.Tests/            🧪 xUnit — next step
+└── AstraCore.AccessControl.Tests/            🧪 xUnit — in progress
 ```
 
 ## Domain Model
@@ -219,23 +222,91 @@ dotnet run --project src/AstraCore.AccessControl.Api
 | ✅ Domain — Entities, Value Objects, Enums | Complete |
 | ✅ Application — Services, DTOs, Validators, Mappings | Complete |
 | ✅ Infrastructure — EF Core, Repositories, Unit of Work | Complete |
-| 🔧 API — Endpoints, error handling, middleware | **In progress** |
-| 🔧 xUnit Tests | **Next step** |
+| ✅ API — 27 endpoints, ValidationFilter, Scalar, auto-discovery | Complete |
+| 🔧 Global Error Handling — `IExceptionHandler` middleware | **Next step** |
+| 🔧 xUnit Tests — Domain, Application, Validators | **Next step** |
+| 🔧 Docker — containerize API + SQL Server | **Planned** |
 
 ## Next Steps
 
-```
-API layer
-  Endpoints/
-    EmployeeEndpoints.cs          GET /employees  POST /employees  PATCH /employees/{id}/status
-    AccessCardEndpoints.cs        GET /cards/{id}  POST /cards  PATCH /cards/{id}
-    AccessPointEndpoints.cs       GET /access-points  POST /access-points  PATCH /access-points/{id}
-    AccessValidationEndpoints.cs  POST /access/attempt  GET /access/logs
+### 🔧 Global Error Handling
 
-xUnit Tests
-  Domain/        Entity behaviour, CardNumber value object rules
-  Application/   Service logic with mocked repositories
-  Validators/    FluentValidation rule coverage per request DTO
+Replace inline `try/catch` in every endpoint handler with a single `IExceptionHandler` middleware.
+Each handler becomes a clean one-liner:
+
+```csharp
+// Before — catch in every handler
+private static async Task<IResult> GetById(Guid id, IEmployeeService service, CancellationToken ct)
+{
+    try { return Results.Ok(await service.GetByIdAsync(id, ct)); }
+    catch (KeyNotFoundException) { return Results.NotFound(); }
+}
+
+// After — global handler takes care of it
+private static async Task<IResult> GetById(Guid id, IEmployeeService service, CancellationToken ct)
+    => Results.Ok(await service.GetByIdAsync(id, ct));
+```
+
+---
+
+### 🧪 xUnit Tests
+
+```
+tests/
+└── AstraCore.AccessControl.Tests/
+      ├── Domain/
+      │     ├── EmployeeTests.cs         Activate/Suspend/Terminate state transitions
+      │     ├── AccessCardTests.cs       IsExpired, IsValid, ExtendExpiry logic
+      │     └── CardNumberTests.cs       Create() validation — length, alphanumeric, casing
+      ├── Application/
+      │     ├── EmployeeServiceTests.cs          CreateAsync duplicate email, UpdateAsync not found
+      │     ├── AccessCardServiceTests.cs         ReactivateAsync conflict, ChangeLevel
+      │     ├── AccessPointServiceTests.cs        Enable/Disable, ChangeRequiredLevel
+      │     └── AccessValidationServiceTests.cs   All 7 AccessResult outcomes
+      └── Validators/
+            ├── CreateEmployeeRequestValidatorTests.cs
+            ├── CreateAccessCardRequestValidatorTests.cs
+            ├── CreateAccessPointRequestValidatorTests.cs
+            └── AccessAttemptRequestValidatorTests.cs
+```
+
+Domain tests require **no mocks** — pure C# logic.
+Application tests mock `IEmployeeRepository`, `IUnitOfWork`, etc. using `NSubstitute`.
+
+---
+
+### 🐳 Docker Containerization
+
+```
+Dockerfile               Multi-stage build — SDK image to build, runtime image to run
+docker-compose.yml       API container + SQL Server container, shared network
+.dockerignore            Exclude bin/, obj/, .env from image
+```
+
+**Planned `docker-compose.yml` services:**
+
+```yaml
+services:
+  api:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db;Database=AstraCore;...
+    depends_on:
+      - db
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong@Passw0rd
+```
+
+Once containerized, the full stack runs with a single command:
+
+```bash
+docker compose up --build
 ```
 
 ## NuGet Packages
@@ -255,6 +326,8 @@ xUnit Tests
 ### API
 ```xml
 <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.5" />
+<PackageReference Include="Scalar.AspNetCore" Version="2.5.x" />
+<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.5" />
 ```
 
 ### Tests
