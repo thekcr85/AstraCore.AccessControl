@@ -1,7 +1,6 @@
 using AstraCore.AccessControl.Domain.Common;
 using AstraCore.AccessControl.Domain.Enums;
 using AstraCore.AccessControl.Domain.ValueObjects;
-using Microsoft.EntityFrameworkCore;
 
 namespace AstraCore.AccessControl.Domain.Entities;
 
@@ -16,10 +15,6 @@ public sealed class AccessCard : BaseEntity
     public Employee Employee { get; private set; } = null!;
 
     private readonly List<AccessLog> _accessLogs = [];
-
-    // [BackingField] tells EF Core: "use _accessLogs field to read/write data,
-    // but expose AccessLogs as readonly to the outside world"
-    [BackingField(nameof(_accessLogs))]
     public IReadOnlyCollection<AccessLog> AccessLogs => _accessLogs.AsReadOnly();
 
     public bool IsExpired => DateTime.UtcNow >= ExpiryDate;
